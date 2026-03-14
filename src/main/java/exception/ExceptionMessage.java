@@ -7,6 +7,7 @@ public enum ExceptionMessage {
     NAME_NOT_INTEGER_ERROR("[ERROR] 이름에 숫자가 들어갈 수 없습니다."),
     INVALID_BET_AMOUNT("[ERROR] 배팅 단위가 올바르지 않습니다."),
     MIN_BET_AMOUNT_ERROR("[ERROR] 최소 배팅 금액 1000원 이상이어야 합니다."),
+    BLACKJACK_FINISH_ERROR("[ERROR] 이미 종료된 카드입니다."),
     INPUT_ERROR("[ERROR] 잘못된 입력입니다.");
 
     private final String message;
