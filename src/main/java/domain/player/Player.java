@@ -15,7 +15,7 @@ public abstract class Player {
     }
 
     public void deal(CardDeck cardDeck) {
-        state.draw(cardDeck);
+        state = state.draw(cardDeck);
     }
 
     public int score() {
@@ -39,7 +39,7 @@ public abstract class Player {
     }
 
     public boolean isFinished() {
-        return state.isFinished();
+        return !state.isFinished();
     }
 
     public boolean isBust() {

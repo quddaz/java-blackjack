@@ -86,11 +86,11 @@ public class BlackJack {
     }
 
     private boolean canHit(Gambler gambler) {
-        return !gambler.isFinished() && askHit(gambler.getName());
+        return gambler.isFinished() && askHit(gambler.getName());
     }
 
     private void finishTurn(Gambler gambler) {
-        if (!gambler.isFinished()) {
+        if (gambler.isFinished()) {
             gambler.stay();
         }
 
@@ -116,7 +116,7 @@ public class BlackJack {
             dealer.deal(cardDeck);
         }
 
-        if (!dealer.isFinished()) {
+        if (dealer.isFinished()) {
             dealer.stay();
         }
     }

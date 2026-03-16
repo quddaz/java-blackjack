@@ -46,6 +46,5 @@ public abstract class Finished implements State {
         return handCard.getOpenCards(count);
     }
 
-    public abstract FinishType type();
 
 }
