@@ -1,25 +1,39 @@
-package domain.player.state;
+package domain.state.finished;
 
 import domain.card.HandCard;
 import domain.deck.CardDeck;
+import domain.state.FinishType;
+import domain.state.State;
 import exception.BlackjackException;
 import exception.ExceptionMessage;
 import java.util.List;
 
-public class Finished implements State {
+public abstract class Finished implements State {
 
     protected final HandCard handCard;
 
     public Finished(HandCard handCard) {
         this.handCard = handCard;
     }
+
     @Override
     public State draw(CardDeck cardDeck) {
         throw new BlackjackException(ExceptionMessage.BLACKJACK_FINISH_ERROR);
     }
+
+    @Override
+    public State stay() {
+        throw new BlackjackException(ExceptionMessage.BLACKJACK_FINISH_ERROR);
+    }
+
     @Override
     public boolean isFinished() {
         return true;
+    }
+
+    @Override
+    public int score() {
+        return handCard.score();
     }
 
     @Override
@@ -28,16 +42,10 @@ public class Finished implements State {
     }
 
     @Override
-    public int profit(int dealerScore) {
-        return 0;
+    public List<String> getOpenCards(int count) {
+        return handCard.getOpenCards(count);
     }
 
-    @Override
-    public State stay() {
-        return new Stay(handCard);
-    }
+    public abstract FinishType type();
 
-    public double earningRate() {
-        return 0;
-    }
 }

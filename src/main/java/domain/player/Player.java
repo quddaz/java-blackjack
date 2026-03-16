@@ -2,41 +2,51 @@ package domain.player;
 
 import domain.card.HandCard;
 import domain.deck.CardDeck;
+import domain.state.Started;
+import domain.state.State;
 import java.util.List;
 
 public abstract class Player {
 
-    protected final HandCard handCard;
+    protected State state;
 
     protected Player() {
-        this.handCard = new HandCard();
+        this.state = new Started(new HandCard());
     }
 
     public void deal(CardDeck cardDeck) {
-        handCard.addCard(cardDeck.deal());
+        state.draw(cardDeck);
     }
 
     public int score() {
-        return handCard.score();
-    }
-
-    public boolean isBust() {
-        return handCard.isBust();
+        return state.score();
     }
 
     public List<String> cards() {
-        return handCard.cards();
+        return state.cards();
+    }
+
+    public List<String> getInitialCards() {
+        return state.getOpenCards(getOpenCardCount());
+    }
+
+    public void stay() {
+        state = state.stay();
     }
 
     public boolean isBlackJack() {
-        return handCard.isBlackJack();
+        return state.isBlackJack();
     }
 
-    protected abstract int getInitialCardCount();
-
-    public List<String> getInitialCards() {
-        return handCard.getOpenCards(getInitialCardCount());
+    public boolean isFinished() {
+        return state.isFinished();
     }
+
+    public boolean isBust() {
+        return state.isBust();
+    }
+
+    protected abstract int getOpenCardCount();
 
     public abstract String getName();
 

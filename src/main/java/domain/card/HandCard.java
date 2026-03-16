@@ -64,4 +64,8 @@ public class HandCard {
                 .toList();
     }
 
+    public boolean isInitialCards() {
+        return cards.size() == INITIAL_CARD_COUNT;
+    }
+
 }

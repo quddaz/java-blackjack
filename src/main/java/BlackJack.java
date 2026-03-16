@@ -75,26 +75,34 @@ public class BlackJack {
     }
 
     private void gamblerTurn(Gambler gambler) {
-        if (checkBlackJack(gambler)) {
-            return;
-        }
+        checkBlackJack(gambler);
 
-        while (!gambler.isBust() && askHit(gambler.getName())) {
+        while (canHit(gambler)) {
             gambler.deal(cardDeck);
             OutputView.printPlayerCards(PlayerCardDto.from(gambler));
         }
+
+        finishTurn(gambler);
+    }
+
+    private boolean canHit(Gambler gambler) {
+        return !gambler.isFinished() && askHit(gambler.getName());
+    }
+
+    private void finishTurn(Gambler gambler) {
+        if (!gambler.isFinished()) {
+            gambler.stay();
+        }
+
         if (gambler.isBust()) {
             OutputView.printPlayerBust(gambler.getName());
         }
     }
 
-    private boolean checkBlackJack(Gambler gambler) {
+    private void checkBlackJack(Gambler gambler) {
         if (gambler.isBlackJack()) {
             OutputView.printPlayerBlackJack(gambler.getName());
-            return true;
         }
-
-        return false;
     }
 
     private boolean askHit(String name) {
@@ -106,6 +114,10 @@ public class BlackJack {
         while (!dealer.canStand()) {
             OutputView.printDealerHit(dealer.getName());
             dealer.deal(cardDeck);
+        }
+
+        if (!dealer.isFinished()) {
+            dealer.stay();
         }
     }
 
