@@ -2,7 +2,6 @@ package domain.state.finished;
 
 import domain.card.HandCard;
 import domain.deck.CardDeck;
-import domain.state.FinishType;
 import domain.state.State;
 import exception.BlackjackException;
 import exception.ExceptionMessage;
