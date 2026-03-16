@@ -92,7 +92,62 @@ BlackJack
 
 ---
 
+
+## 확장 룰 추가 시 비교 예제 (`Split`, `DoubleDown`, `Surrender`)
+
+### 예제. Step2에서 조건 분기 확장되는 모습
+
+```java
+if (canSplit(handCard) && askSplit()) {
+    splitHand();
+} else if (canDoubleDown(handCard) && askDoubleDown()) {
+    doubleBet();
+    deal(cardDeck);
+    endTurn();
+} else if (askSurrender()) {
+    surrender();
+    endTurn();
+} else {
+    while (!isBust() && askHit()) {
+        deal(cardDeck);
+    }
+}
+```
+
+- 초반에는 빠르게 구현 가능하지만,
+- 룰이 더 늘어나면 `if/else` 체인이 턴 로직 전반으로 퍼질 가능성이 큽니다.
+
+### 예제. Step3에서 상태 객체로 확장하는 모습
+
+```java
+interface State {
+    State draw(CardDeck deck);
+    State split();
+    State doubleDown(CardDeck deck);
+    State surrender();
+    boolean isFinished();
+}
+
+class Hit implements State {
+    @Override
+    public State split() { return new SplitPlaying(...); }
+
+    @Override
+    public State doubleDown(CardDeck deck) {
+        // 베팅 2배 + 카드 1장 + 턴 종료
+        return new DoubleDownFinished(...);
+    }
+
+    @Override
+    public State surrender() { return new SurrenderFinished(...); }
+}
+```
+
+- 상태별 허용 행동/금지 행동을 각 상태 클래스에 캡슐화 가능
+- "이 상태에서 이 액션이 가능한가?"를 `if`가 아니라 타입/구현으로 표현 가능
+
 # 결론
+상태 패턴은 확장 가능성도 있지만 각 상태의 `if`로 제어하는 것이 아닌 상태가 직접 책임지는게 하는 것
 
 현재 과제 범위의 블랙잭에서는
 
